@@ -51,6 +51,20 @@
         zmk,underglow = &led_strip;
     };
 
+    behaviors {
+        // Space on tap, Left Shift on hold. tap-preferred so fast typing
+        // (rolling space + a letter) never registers a phantom shift —
+        // the hold only fires if you genuinely hold past the term.
+        spc_sft: space_shift {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <175>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
@@ -61,7 +75,7 @@
 &kp ESC    &kp Q     &kp W     &kp E     &kp R     &kp T                                   &kp Y     &kp U     &kp I     &kp O     &kp P     &kp BSPC
 &kp TAB    &kp A     &kp S     &kp D     &kp F     &kp G                                   &kp H     &kp J     &kp K     &kp L     &kp SEMI  &kp MINUS
 &kp LSHFT  &kp Z     &kp X     &kp C     &kp V     &kp B     &kp C_MUTE       &kp PG_UP    &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH  &kp RSHFT
-                     &kp LCTRL &kp LALT  &kp LGUI  &mo PROGRAM &kp RET            &mt LSHFT SPACE &mo MOV   &mo EXTRA &kp RALT  &kp RCTRL
+                     &kp LGUI  &kp LALT  &mo PROGRAM &kp LCTRL &kp RET           &spc_sft LSHFT SPACE &mo MOV &mo EXTRA &kp RALT  &kp RCTRL
             >;
             sensor-bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP &inc_dec_kp C_PREV C_NEXT>;
         };
